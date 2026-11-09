@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tứ giác – Hình học 8</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f9fc;--card:#fff;--fg:#14213d;--mut:#5b6b85;--line:#cfd9e8;--ac:#1d4ed8;--hi:#d6336c;--ok:#15803d;--bad:#b91c1c;--okbg:#dcfce7;--badbg:#fee2e2;color-scheme:light;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f172a;--card:#1b2540;--fg:#e8eefc;--mut:#9fb0cf;--line:#33436a;--ac:#7aa2ff;--hi:#ff7aa8;--ok:#4ade80;--bad:#f87171;--okbg:#14352a;--badbg:#3f1d24;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f172a;--card:#1b2540;--fg:#e8eefc;--mut:#9fb0cf;--line:#33436a;--ac:#7aa2ff;--hi:#ff7aa8;--ok:#4ade80;--bad:#f87171;--okbg:#14352a;--badbg:#3f1d24;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 "Be Vietnam Pro",system-ui,sans-serif;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;background-attachment:fixed}
+main{max-width:860px;margin:0 auto;padding:20px 14px 48px}
+h1{font-size:clamp(1.7rem,6vw,2.6rem);font-weight:800;margin:6px 0 2px;letter-spacing:-.02em}
+.sub{color:var(--mut);margin:0 0 16px}
+nav{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+nav button,.chip,.btn{font:inherit;border:2px solid var(--fg);background:var(--card);color:var(--fg);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+nav button[aria-selected=true],.chip[aria-pressed=true]{background:var(--fg);color:var(--bg)}
+button:focus-visible{outline:3px solid var(--hi);outline-offset:2px}
+.panel{background:var(--card);border:2px solid var(--fg);border-radius:10px;padding:16px;box-shadow:5px 5px 0 var(--fg)}
+.tree{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.arr{color:var(--mut);font-size:.8rem}
+h3{margin:0 0 6px;font-size:1.35rem}
+h4{margin:14px 0 4px;color:var(--ac)}
+ul{margin:0;padding-left:20px}li{margin:3px 0}
+.from{color:var(--hi);font-weight:600;margin:0 0 8px}
+.btn{background:var(--ac);color:#fff;border-color:var(--ac);margin-top:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+svg{width:100%;max-width:560px;display:block;margin:0 auto;background:var(--bg);border:2px solid var(--fg);border-radius:8px;touch-action:none;user-select:none}
+.meas{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:4px 10px;margin:12px 0;font-variant-numeric:tabular-nums;font-size:.92rem}
+.meas span{border-bottom:1px dotted var(--line)}
+.checks{display:flex;flex-wrap:wrap;gap:6px}
+.ck{padding:3px 10px;border-radius:99px;font-size:.88rem;font-weight:600}
+.ck.y{background:var(--okbg);color:var(--ok)}.ck.n{background:var(--badbg);color:var(--bad);opacity:.75}
+.hint{color:var(--mut);font-size:.9rem;margin:8px 0}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;font:inherit;border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:10px 12px;cursor:pointer}
+.opt.good{border-color:var(--ok);background:var(--okbg)}.opt.bad{border-color:var(--bad);background:var(--badbg)}
+.exp{margin-top:10px;padding:10px;border-left:4px solid var(--ac);background:var(--bg)}
+.prog{color:var(--mut);font-size:.9rem}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+<h1>Tứ giác – Hình học 8</h1>
+<p class="sub">Tra cứu, kéo hình để tự kiểm chứng, rồi luyện tập.</p>
+<nav role="tablist">
+<button role="tab" data-t="a" aria-selected="true">1. Sơ đồ</button>
+<button role="tab" data-t="b" aria-selected="false">2. Kéo hình</button>
+<button role="tab" data-t="c" aria-selected="false">3. Luyện tập</button>
+</nav>
+
+<section id="a" class="tab">
+<div class="tree" id="tree"></div>
+<div class="panel" id="info"></div>
+</section>
+
+<section id="b" class="tab" hidden>
+<div class="chips" id="chips2"></div>
+<svg id="svg" viewBox="0 0 400 300" aria-label="Hình kéo được"></svg>
+<p class="hint">Kéo các chấm đặc để đổi hình. Các đỉnh còn lại tự di chuyển để giữ đúng loại hình. Mỗi ô là 1 cm.</p>
+<div class="meas" id="meas"></div>
+<div class="checks" id="checks"></div>
+</section>
+
+<section id="c" class="tab" hidden>
+<div class="panel" id="quiz"></div>
+</section>
+</main>
+
+<script>
+const D={
+tg:{n:"Tứ giác",from:"",def:"Hình có bốn đỉnh, bốn cạnh, trong đó không có ba đỉnh nào thẳng hàng.",tc:["Tổng bốn góc bằng 360°."],dh:["(Tứ giác thường chưa có dấu hiệu đặc biệt.)"]},
+thang:{n:"Hình thang",from:"Là tứ giác đặc biệt",def:"Tứ giác có hai cạnh đối song song (hai cạnh đó gọi là hai đáy).",tc:["Hai góc kề một cạnh bên bù nhau (tổng 180°)."],dh:["Tứ giác có hai cạnh đối song song."]},
+tcan:{n:"Hình thang cân",from:"Là hình thang đặc biệt",def:"Hình thang có hai góc kề một đáy bằng nhau.",tc:["Hai cạnh bên bằng nhau.","Hai đường chéo bằng nhau."],dh:["Hình thang có hai góc kề một đáy bằng nhau.","Hình thang có hai đường chéo bằng nhau."]},
+bhh:{n:"Hình bình hành",from:"Là tứ giác đặc biệt (cũng là hình thang đặc biệt)",def:"Tứ giác có các cạnh đối song song.",tc:["Các cạnh đối bằng nhau.","Các góc đối bằng nhau.","Hai đường chéo cắt nhau tại trung điểm của mỗi đường."],dh:["Tứ giác có các cạnh đối song song.","Tứ giác có các cạnh đối bằng nhau.","Tứ giác có hai cạnh đối song song và bằng nhau.","Tứ giác có các góc đối bằng nhau.","Tứ giác có hai đường chéo cắt nhau tại trung điểm của mỗi đường."]},
+cn:{n:"Hình chữ nhật",from:"Là hình bình hành đặc biệt (cũng là hình thang cân đặc biệt)",def:"Tứ giác có bốn góc vuông.",tc:["Có tất cả tính chất của hình bình hành và hình thang cân.","Hai đường chéo bằng nhau và cắt nhau tại trung điểm của mỗi đường."],dh:["Tứ giác có ba góc vuông.","Hình thang cân có một góc vuông.","Hình bình hành có một góc vuông.","Hình bình hành có hai đường chéo bằng nhau."]},
+thoi:{n:"Hình thoi",from:"Là hình bình hành đặc biệt",def:"Tứ giác có bốn cạnh bằng nhau.",tc:["Có tất cả tính chất của hình bình hành.","Hai đường chéo vuông góc với nhau.","Hai đường chéo là các đường phân giác của các góc."],dh:["Tứ giác có bốn cạnh bằng nhau.","Hình bình hành có hai cạnh kề bằng nhau.","Hình bình hành có hai đường chéo vuông góc.","Hình bình hành có một đường chéo là đường phân giác của một góc."]},
+vuong:{n:"Hình vuông",from:"Vừa là hình chữ nhật, vừa là hình thoi",def:"Tứ giác có bốn góc vuông và bốn cạnh bằng nhau.",tc:["Có tất cả tính chất của hình chữ nhật và hình thoi.","Hai đường chéo bằng nhau, vuông góc, cắt nhau tại trung điểm và là phân giác các góc."],dh:["Hình chữ nhật có hai cạnh kề bằng nhau.","Hình chữ nhật có hai đường chéo vuông góc.","Hình chữ nhật có một đường chéo là phân giác của một góc.","Hình thoi có một góc vuông.","Hình thoi có hai đường chéo bằng nhau."]}
+};
+const $=s=>document.querySelector(s);
+const tree=[["tg"],["thang"],["tcan","bhh"],["cn","thoi"],["vuong"]];
+let cur="bhh";
+// ---- tabs
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>go(b.dataset.t));
+function go(t){document.querySelectorAll(".tab").forEach(s=>s.hidden=s.id!==t);
+document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===t));
+if(t==="b")loadShape(cur)}
+// ---- tab 1
+function drawTree(){$("#tree").innerHTML=tree.map((r,i)=>(i?'<div class="arr">▼ trường hợp đặc biệt</div>':'')+'<div class="row">'+r.map(k=>`<button class="chip" data-k="${k}" aria-pressed="${k===cur}">${D[k].n}</button>`).join("")+'</div>').join("");
+document.querySelectorAll("#tree .chip").forEach(b=>b.onclick=()=>{cur=b.dataset.k;drawTree();drawInfo()})}
+function drawInfo(){const d=D[cur];$("#info").innerHTML=`<h3>${d.n}</h3>${d.from?`<p class="from">${d.from}</p>`:""}<p><b>Định nghĩa:</b> ${d.def}</p><h4>Tính chất (đã biết là hình này thì suy ra)</h4><ul>${d.tc.map(x=>`<li>${x}</li>`).join("")}</ul><h4>Dấu hiệu nhận biết (dùng để chứng minh)</h4><ul>${d.dh.map(x=>`<li>${x}</li>`).join("")}</ul><button class="btn" id="goB">Kéo hình này</button>`;
+$("#goB").onclick=()=>go("b")}
+drawTree();drawInfo();
+// ---- tab 2: geometry
+const sub=(a,b)=>({x:a.x-b.x,y:a.y-b.y}),add=(a,b)=>({x:a.x+b.x,y:a.y+b.y}),mul=(a,k)=>({x:a.x*k,y:a.y*k}),dot=(a,b)=>a.x*b.x+a.y*b.y,len=a=>Math.hypot(a.x,a.y),mid=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2}),cr=(a,b)=>a.x*b.y-a.y*b.x;
+const unit=a=>{const l=len(a);return l<1e-6?{x:1,y:0}:mul(a,1/l)};
+const P=(x,y)=>({x,y});
+const SH={
+tg:{drag:[0,1,2,3],V:[P(70,230),P(310,210),P(340,80),P(100,60)],fix(){}},
+thang:{drag:[0,1,2,3],V:[P(60,230),P(300,230),P(260,90),P(110,90)],i0:2,fix(V,S,i){const b=sub(V[1],V[0]);if(i==2)S.t=Math.max(.15,dot(sub(V[2],V[3]),b)/(dot(b,b)||1));V[2]=add(V[3],mul(b,S.t))}},
+tcan:{drag:[0,1,3],V:[P(60,230),P(340,230),P(0,0),P(120,90)],fix(V){const M=mid(V[0],V[1]),u=unit(sub(V[1],V[0]));let k=dot(sub(V[3],M),u);if(k>-8){V[3]=sub(V[3],mul(u,k+8));k=-8}V[2]=sub(V[3],mul(u,2*k))}},
+bhh:{drag:[0,1,3],V:[P(80,230),P(260,230),P(0,0),P(150,80)],fix(V){V[2]=add(V[1],sub(V[3],V[0]))}},
+cn:{drag:[0,1,3],V:[P(90,230),P(300,230),P(0,0),P(90,100)],i0:3,fix(V,S,i){const u=unit(sub(V[1],V[0])),n=P(u.y,-u.x);if(i==3)S.h=Math.max(15,dot(sub(V[3],V[0]),n));const o=mul(n,S.h);V[3]=add(V[0],o);V[2]=add(V[1],o)}},
+thoi:{drag:[0,1,2],V:[P(70,150),P(200,60),P(330,150),P(0,0)],i0:1,fix(V,S,i){const O=mid(V[0],V[2]),u=unit(sub(V[2],V[0])),n=P(u.y,-u.x);if(i==1){const t=dot(sub(V[1],O),n);S.t=Math.abs(t)<12?(t<0?-12:12):t}V[1]=add(O,mul(n,S.t));V[3]=sub(O,mul(n,S.t))}},
+vuong:{drag:[0,1],V:[P(130,220),P(270,220),P(0,0),P(0,0)],fix(V){const d=sub(V[1],V[0]),u=unit(d),n=P(u.y,-u.x),o=mul(n,Math.max(len(d),15));V[3]=add(V[0],o);V[2]=add(V[1],o)}}
+};
+let V,S,sh,dragI=null;const NS="http://www.w3.org/2000/svg",L="ABCD";
+function loadShape(k){cur=k;sh=SH[k];V=sh.V.map(p=>({...p}));S={};sh.fix(V,S,sh.i0??-1);
+$("#chips2").innerHTML=Object.keys(D).map(x=>`<button class="chip" data-k="${x}" aria-pressed="${x===k}">${D[x].n}</button>`).join("");
+document.querySelectorAll("#chips2 .chip").forEach(b=>b.onclick=()=>{loadShape(b.dataset.k);drawTree();drawInfo()});
+buildSvg();render()}
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);(p||$("#svg")).appendChild(e);return e}
+let E={};
+function buildSvg(){const s=$("#svg");s.innerHTML="";
+for(let x=0;x<=400;x+=40)el("line",{x1:x,y1:0,x2:x,y2:300,stroke:"var(--line)","stroke-width":1});
+for(let y=0;y<=300;y+=40)el("line",{x1:0,y1:y,x2:400,y2:y,stroke:"var(--line)","stroke-width":1});
+E.poly=el("polygon",{fill:"var(--ac)","fill-opacity":.13,stroke:"var(--ac)","stroke-width":3,"stroke-linejoin":"round"});
+E.d1=el("line",{stroke:"var(--hi)","stroke-width":1.5,"stroke-dasharray":"5 4"});
+E.d2=el("line",{stroke:"var(--hi)","stroke-width":1.5,"stroke-dasharray":"5 4"});
+E.ra=el("path",{fill:"none",stroke:"var(--fg)","stroke-width":1.5});
+E.pt=[];E.tx=[];
+for(let i=0;i<4;i++){const g=sh.drag.includes(i);
+const c=el("circle",{r:g?7:4,fill:g?"var(--hi)":"var(--bg)",stroke:"var(--hi)","stroke-width":2,style:g?"cursor:grab":""});
+if(g){const h=el("circle",{r:20,fill:"transparent",style:"cursor:grab"});h.dataset.i=i;h.addEventListener("pointerdown",e=>{dragI=i;h.setPointerCapture(e.pointerId)});E.pt.push([c,h])}else E.pt.push([c]);
+const t=el("text",{"font-size":17,"font-weight":700,fill:"var(--fg)","text-anchor":"middle"});t.textContent=L[i];E.tx.push(t)}
+s.onpointermove=e=>{if(dragI===null)return;const r=s.getBoundingClientRect();
+V[dragI]=P(Math.min(385,Math.max(15,(e.clientX-r.left)/r.width*400)),Math.min(285,Math.max(15,(e.clientY-r.top)/r.height*300)));sh.fix(V,S,dragI);render()};
+s.onpointerup=s.onpointercancel=()=>dragI=null}
+function ang(i){const p=V[i],a=sub(V[(i+3)%4],p),b=sub(V[(i+1)%4],p);return Math.acos(Math.max(-1,Math.min(1,dot(a,b)/(len(a)*len(b)||1))))*180/Math.PI}
+function render(){
+E.poly.setAttribute("points",V.map(p=>p.x+","+p.y).join(" "));
+[[E.d1,0,2],[E.d2,1,3]].forEach(([e,a,b])=>{e.setAttribute("x1",V[a].x);e.setAttribute("y1",V[a].y);e.setAttribute("x2",V[b].x);e.setAttribute("y2",V[b].y)});
+const cen=mul(V.reduce(add),.25);let path="";
+for(let i=0;i<4;i++){E.pt[i].forEach(c=>{c.setAttribute("cx",V[i].x);c.setAttribute("cy",V[i].y)});
+const o=unit(sub(V[i],cen));E.tx[i].setAttribute("x",V[i].x+o.x*18);E.tx[i].setAttribute("y",V[i].y+o.y*18+6);
+if(Math.abs(ang(i)-90)<1.2){const p=V[i],a=mul(unit(sub(V[(i+3)%4],p)),12),b=mul(unit(sub(V[(i+1)%4],p)),12),q=add(add(p,a),b);path+=`M${p.x+a.x} ${p.y+a.y}L${q.x} ${q.y}L${p.x+b.x} ${p.y+b.y}`}}
+E.ra.setAttribute("d",path);
+const[A,B,C,Dd]=V,AB=sub(B,A),BC=sub(C,B),CD=sub(Dd,C),DA=sub(A,Dd),AC=sub(C,A),BD=sub(Dd,B);
+const cm=v=>(len(v)/40).toFixed(1),an=ang;
+$("#meas").innerHTML=[["AB",AB],["BC",BC],["CD",CD],["DA",DA],["AC",AC],["BD",BD]].map(([n,v])=>`<span>${n} = ${cm(v)} cm</span>`).join("")+[0,1,2,3].map(i=>`<span>Góc ${L[i]} = ${an(i).toFixed(0)}°</span>`).join("")+`<span><b>Tổng 4 góc = ${[0,1,2,3].reduce((s,i)=>s+an(i),0).toFixed(0)}°</b></span>`;
+const par=(u,v)=>Math.abs(cr(u,v))/(len(u)*len(v)||1)<.012,eq=(a,b)=>Math.abs(len(a)-len(b))<2.2,rt=i=>Math.abs(an(i)-90)<1.2;
+const ck=[["AB ∥ CD",par(AB,CD)],["AD ∥ BC",par(DA,BC)],["AB = CD",eq(AB,CD)],["AD = BC",eq(DA,BC)],["Góc A = góc B",Math.abs(an(0)-an(1))<1.2],["Hai đường chéo cắt nhau tại trung điểm",len(sub(mid(A,C),mid(B,Dd)))<2],["AC = BD",eq(AC,BD)],["AC ⊥ BD",Math.abs(dot(AC,BD))/(len(AC)*len(BD)||1)<.017],["Bốn cạnh bằng nhau",eq(AB,BC)&&eq(BC,CD)&&eq(CD,DA)],["Bốn góc vuông",[0,1,2,3].every(rt)]];
+$("#checks").innerHTML=ck.map(([t,y])=>`<span class="ck ${y?"y":"n"}">${y?"✓":"✗"} ${t}</span>`).join("")}
+// ---- tab 3: quiz
+const Q=[
+{q:"Tứ giác có hai đường chéo cắt nhau tại trung điểm của mỗi đường là hình gì?",o:["Hình thang cân","Hình bình hành","Hình thang","Hình chữ nhật"],a:1,e:"Đây là dấu hiệu nhận biết hình bình hành. Chưa đủ để kết luận hình chữ nhật hay hình thoi, vì còn thiếu điều kiện về góc hoặc cạnh."},
+{q:"Hình bình hành có một góc vuông là hình gì?",o:["Hình thoi","Hình thang cân","Hình chữ nhật","Hình vuông"],a:2,e:"Hình bình hành có một góc vuông thì là hình chữ nhật. Muốn thành hình vuông còn cần thêm hai cạnh kề bằng nhau."},
+{q:"Hình bình hành có hai đường chéo vuông góc là hình gì?",o:["Hình chữ nhật","Hình thoi","Hình thang","Hình vuông"],a:1,e:"Hình bình hành có hai đường chéo vuông góc là hình thoi."},
+{q:"Hình thang có hai đường chéo bằng nhau là hình gì?",o:["Hình thang cân","Hình bình hành","Hình thoi","Hình vuông"],a:0,e:"Hình thang có hai đường chéo bằng nhau là hình thang cân. Dấu hiệu này chỉ dùng cho hình thang, chưa chắc đúng với tứ giác bất kỳ."},
+{q:"Hình chữ nhật có hai cạnh kề bằng nhau là hình gì?",o:["Hình thoi","Hình thang cân","Hình bình hành","Hình vuông"],a:3,e:"Hình chữ nhật có hai cạnh kề bằng nhau thì bốn cạnh bằng nhau và bốn góc vuông, nên là hình vuông."},
+{q:"Tứ giác có ba góc vuông là hình gì?",o:["Hình vuông","Hình chữ nhật","Hình thoi","Hình thang"],a:1,e:"Tổng bốn góc bằng 360°, nên góc còn lại cũng bằng 90°. Tứ giác có bốn góc vuông là hình chữ nhật."},
+{q:"Tính chất nào đúng với hình thoi nhưng không đúng với mọi hình chữ nhật?",o:["Hai đường chéo cắt nhau tại trung điểm","Các cạnh đối song song","Hai đường chéo vuông góc","Các góc đối bằng nhau"],a:2,e:"Ba tính chất còn lại là của hình bình hành, mà cả hình thoi và hình chữ nhật đều là hình bình hành. Hai đường chéo vuông góc là tính chất riêng của hình thoi."},
+{q:"Hình thang ABCD có AB // CD và góc A = 70°. Số đo góc D là?",o:["70°","90°","110°","290°"],a:2,e:"AD là cạnh bên nên góc A và góc D kề cạnh bên, bù nhau: 180° − 70° = 110°."},
+{q:"Hình nào sau đây không nhất thiết có hai đường chéo bằng nhau?",o:["Hình chữ nhật","Hình vuông","Hình thang cân","Hình thoi"],a:3,e:"Hình thoi có hai đường chéo vuông góc nhưng thường không bằng nhau. Chỉ khi là hình vuông thì mới bằng nhau."},
+{q:"Hình nào vừa là hình chữ nhật vừa là hình thoi?",o:["Hình bình hành","Hình thang cân","Hình vuông","Không có hình nào"],a:2,e:"Hình vuông có bốn góc vuông (chữ nhật) và bốn cạnh bằng nhau (thoi)."}
+];
+let qi=0,sc=0,done=false;
+function showQ(){const z=$("#quiz");
+if(qi>=Q.length){z.innerHTML=`<h3>Kết quả: ${sc}/${Q.length}</h3><p>${sc>=8?"Rất chắc kiến thức. Hãy thử tự chứng minh bằng ký hiệu trong vở.":sc>=5?"Khá ổn. Xem lại các câu sai ở tab Sơ đồ, rồi thử kéo hình ở tab 2 để thấy tận mắt.":"Chưa vững. Quay lại tab Sơ đồ và đọc kỹ phần Dấu hiệu nhận biết của từng hình."}</p><button class="btn" id="re">Làm lại</button>`;$("#re").onclick=()=>{qi=0;sc=0;showQ()};return}
+const q=Q[qi];done=false;
+z.innerHTML=`<p class="prog">Câu ${qi+1}/${Q.length} – Điểm: ${sc}</p><h3>${q.q}</h3>${q.o.map((t,i)=>`<button class="opt" data-i="${i}">${t}</button>`).join("")}<div id="fb"></div>`;
+z.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{if(done)return;done=true;const i=+b.dataset.i;
+z.querySelectorAll(".opt").forEach((x,j)=>{if(j===q.a)x.classList.add("good");else if(j===i)x.classList.add("bad")});
+if(i===q.a)sc++;
+$("#fb").innerHTML=`<div class="exp"><b>${i===q.a?"Đúng.":"Chưa đúng."}</b> ${q.e}</div><button class="btn" id="nx">${qi+1<Q.length?"Câu tiếp theo":"Xem kết quả"}</button>`;
+$("#nx").onclick=()=>{qi++;showQ()}})}
+showQ();
+</script>
+</body>
+</html>
